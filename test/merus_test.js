@@ -71,10 +71,17 @@ describe("Merus", function(){
     });
 
     it("returns a verification", function(done){
-      var email = username;
-      merus.users.invite(email, function(err, verification){
+      var params = {
+        email: username,
+        redirect_uri: 'http://example.com/auth/signin',
+      };
+
+      merus.users.invite(params, function(err, verification){
         assert.equal(err, null);
-        assert.equal(verification.email, email);
+
+        assert.ok(verification.token);
+        assert.equal(verification.email, params.email);
+        assert.equal(verification.redirect_uri, params.redirect_uri);
         done();
       });
     });
